@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { getAuth, signOut } from 'firebase/auth';
+import { auth } from '../config/FireBaseConfig'; // ou o caminho correto
+import { signOut } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import Swal from 'sweetalert2';
@@ -9,8 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 export default function Perfil() {
   const [user, setUser] = useState(null);
   const navigation = useNavigation();
-  const auth = getAuth();
-
+  
   useEffect(() => {
     const fetchUserData = async () => {
       const currentUser = auth.currentUser;
