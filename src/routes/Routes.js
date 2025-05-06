@@ -18,11 +18,11 @@ function BottomTabs() {
             initialRouteName="Inicio"
             screenOptions={({ route }) => ({
                 headerStyle: {
-                    backgroundColor: '#FF6B00',
+                    backgroundColor: '#1e90ff',
                 },
                 headerTintColor: '#fff',
                 tabBarStyle: {
-                    backgroundColor: '#FF6B00',
+                    backgroundColor: '#1e90ff',
                     borderTopWidth: 0,
                 },
                 tabBarActiveTintColor: '#fff',
@@ -49,7 +49,7 @@ function BottomTabs() {
                 tabBarActiveTintColor: '#fff',
                 tabBarInactiveTintColor: 'rgba(255,255,255,0.6)',
                 tabBarStyle: {
-                    backgroundColor: '#FF6B00',
+                    backgroundColor: '#1e90ff',
                     borderTopWidth: 0,
                     height: 60,
                 },

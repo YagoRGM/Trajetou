@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, Image } from "react-native";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, db } from "../config/FireBaseConfig";
 import { doc, setDoc } from "firebase/firestore";
@@ -61,11 +61,19 @@ export default function Cadastro({ navigation }) {
 
     return (
         <View style={styles.container}>
+            <View style={styles.card}>
+                <Image
+                    source={require('../../assets/trajetou_logo.png')}
+                    style={{ width: 200, height: 200 }}
+                />
+                
             <Text style={styles.title}>Cadastro</Text>
 
             <TouchableOpacity onPress={() => navigation.navigate("Inicio")}>
                 <Text style={styles.link}>Inicio</Text>
             </TouchableOpacity>
+
+            <View style={styles.div_inputs}>
 
             <Text style={styles.label}>Nome</Text>
             <TextInput
@@ -103,6 +111,8 @@ export default function Cadastro({ navigation }) {
                 onChangeText={setConfirmarSenha}
             />
 
+            </View>
+
             {loading ? (
                 <ActivityIndicator size="large" color="#1e90ff" style={{ marginTop: 20 }} />
             ) : (
@@ -114,6 +124,7 @@ export default function Cadastro({ navigation }) {
             <TouchableOpacity onPress={() => navigation.navigate("Login")}>
                 <Text style={styles.link}>Já tenho uma conta</Text>
             </TouchableOpacity>
+            </View>
         </View>
     );
 }
@@ -121,10 +132,23 @@ export default function Cadastro({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: "#1e90ff",
         justifyContent: "center",
         padding: 20,
     },
+    card: {
+        backgroundColor: "#fff",
+        padding: 20,
+        borderRadius: 15,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      div_inputs: {
+        justifyContent: 'flex-start',
+        width: '100%',
+      },
     title: {
         fontSize: 32,
         fontWeight: "bold",
@@ -143,7 +167,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     button: {
-        backgroundColor: "#1e90ff",
+        backgroundColor: "#1967D2",
         borderRadius: 8,
         padding: 12,
         alignItems: "center",

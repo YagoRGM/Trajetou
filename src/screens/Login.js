@@ -34,7 +34,15 @@ export default function Login({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <View style={styles.card}>
+      <Image
+        source={require('../../assets/trajetou_logo.png')}
+        style={{ width: 200, height: 200 }}
+      />
+
+      <Text style={styles.title}>Fazer login</Text>
+
+      <View style={styles.div_inputs}>
 
       <Text style={styles.label}>Email</Text>
       <TextInput
@@ -54,6 +62,8 @@ export default function Login({ navigation }) {
         onChangeText={setSenha}
       />
 
+      </View>
+
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
@@ -61,6 +71,7 @@ export default function Login({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
         <Text style={styles.link}>Criar uma conta</Text>
       </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -68,9 +79,22 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#1e90ff",
     justifyContent: "center",
     padding: 20,
+  },
+  card: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 15,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  div_inputs: {
+    justifyContent: 'flex-start',
+    width: '100%',
   },
   title: {
     fontSize: 32,
@@ -90,7 +114,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   button: {
-    backgroundColor: "#1e90ff",
+    backgroundColor: "#1967D2",
     borderRadius: 8,
     padding: 12,
     alignItems: "center",
