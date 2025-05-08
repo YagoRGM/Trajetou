@@ -8,69 +8,64 @@ export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
-  const handleLogin = async () => {
-    if (!email || !senha) {
-      alert("Erro, preencha todos os campos.");
+  const handleLogin = () => {
+    const emailFixo = "sesi@gmail.com";
+    const senhaFixa = "707070";
+
+    if (email !== emailFixo || senha !== senhaFixa) {
+      Alert.alert("Erro", "Email ou senha incorretos.");
+      // alert("Erro, email ou senha incorretos.");
       return;
     }
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, senha);
-      const user = userCredential.user;
+    Alert.alert("Sucesso", "Login realizado com sucesso!", [
+      { text: "OK", onPress: () => navigation.navigate("Inicio") },
+    ]);
 
-      const userDoc = await getDoc(doc(db, "users", user.uid));
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        console.log("Usuário logado:", userData);
-      }
+    // alert("Sucesso, Login realizado com sucesso!");
+    // navigation.navigate("Inicio");
 
-      alert(`Bem-vindo, ${user.displayName || "usuário"}!`);
-      navigation.navigate("Inicio");
-    } catch (error) {
-      console.error("Erro no login:", error.message);
-      alert("Erro", error.message);
-    }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-      <Image
-        source={require('../../assets/trajetou_logo.png')}
-        style={{ width: 200, height: 200 }}
-      />
+        <Image
+          source={require('../../assets/trajetou_logo.png')}
+          style={{ width: 200, height: 200 }}
+        />
 
-      <Text style={styles.title}>Fazer login</Text>
+        <Text style={styles.title}>Entrar</Text>
 
-      <View style={styles.div_inputs}>
+        <View style={styles.div_inputs}>
 
-      <Text style={styles.label}>Email</Text>
-      <TextInput
-        placeholder="Digite seu email"
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-      />
+          <Text style={styles.label}>Email</Text>
+          <TextInput
+            placeholder="Digite seu email"
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+          />
 
-      <Text style={styles.label}>Senha</Text>
-      <TextInput
-        placeholder="Digite sua senha"
-        style={styles.input}
-        secureTextEntry
-        value={senha}
-        onChangeText={setSenha}
-      />
+          <Text style={styles.label}>Senha</Text>
+          <TextInput
+            placeholder="Digite sua senha"
+            style={styles.input}
+            secureTextEntry
+            value={senha}
+            onChangeText={setSenha}
+          />
 
-      </View>
+        </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Entrar</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Entrar</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
-        <Text style={styles.link}>Criar uma conta</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
+          <Text style={styles.link}>Criar uma conta</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -99,7 +94,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: "bold",
-    marginBottom: 30,
+    marginTop: 14,
+    marginBottom: 28,
     textAlign: "center",
   },
   label: {
@@ -117,13 +113,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#1967D2",
     borderRadius: 8,
     padding: 12,
+    width: "100%",
     alignItems: "center",
     marginTop: 10,
   },
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 18,
   },
   link: {
     marginTop: 20,
