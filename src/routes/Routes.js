@@ -2,6 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Inicio from '../screens/Inicio';
 import Perfil from '../screens/Perfil';
@@ -13,6 +14,8 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function BottomTabs() {
+    const insets = useSafeAreaInsets();
+
     return (
         <Tab.Navigator
             initialRouteName="Inicio"
@@ -24,6 +27,8 @@ function BottomTabs() {
                 tabBarStyle: {
                     backgroundColor: '#1e90ff',
                     borderTopWidth: 0,
+                    height: 60 + insets.bottom,
+                    paddingBottom: insets.bottom,
                 },
                 tabBarActiveTintColor: '#fff',
                 tabBarInactiveTintColor: 'rgba(255,255,255,0.5)',
@@ -51,7 +56,8 @@ function BottomTabs() {
                 tabBarStyle: {
                     backgroundColor: '#1e90ff',
                     borderTopWidth: 0,
-                    height: 60,
+                    height: 60 + insets.bottom,
+                    paddingBottom: insets.bottom,
                 },
                 tabBarLabelStyle: {
                     fontSize: 12,
@@ -59,7 +65,6 @@ function BottomTabs() {
                 },
             })}
         >
-            <Tab.Screen name="Rotas" component={Rotas} />
             <Tab.Screen name="Inicio" component={Inicio} />
             <Tab.Screen name="Perfil" component={Perfil} />
         </Tab.Navigator>
@@ -76,7 +81,7 @@ export default function Routes() {
             <Stack.Screen name="Rotas" component={Rotas}
                 options={{
                     title: 'Rotas',
-                    headerStyle: { backgroundColor: '#FF6B00' },
+                    headerStyle: { backgroundColor: '#1e90ff' },
                     headerTintColor: '#fff',
                 }}
             />

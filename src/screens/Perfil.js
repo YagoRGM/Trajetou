@@ -1,175 +1,113 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { auth } from '../config/FireBaseConfig'; // ou o caminho correto
-import { signOut } from 'firebase/auth';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Swal from 'sweetalert2';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function Perfil() {
-  const [user, setUser] = useState(null);
-  const navigation = useNavigation();
-  
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const currentUser = auth.currentUser;
-      if (currentUser) {
-        const firestore = getFirestore();
-        const userRef = doc(firestore, 'users', currentUser.uid);
-        const userSnap = await getDoc(userRef);
+    const navigation = useNavigation();
+    const [nome, setNome] = useState('SESI');
+    const [novoNome, setNovoNome] = useState('SESI');
 
-        if (userSnap.exists()) {
-          const userData = userSnap.data();
-          setUser({
-            uid: currentUser.uid,
-            email: currentUser.email,
-            displayName: currentUser.displayName,
-            foto: userData.foto || currentUser.photoURL,
-          });
-        } else {
-          setUser({
-            uid: currentUser.uid,
-            email: currentUser.email,
-            displayName: currentUser.displayName,
-            foto: currentUser.photoURL,
-          });
-        }
-      }
+    const salvarAlteracoes = () => {
+        Alert.alert('Alterações Salvas', `O nome foi alterado para: ${novoNome}`);
     };
 
-    fetchUserData();
-  }, []);
+    const logout = () => {
+        Alert.alert('Sair', 'Você saiu da sua conta!', [{ text: 'OK' }]);
+        navigation.navigate("Login");
+    };
 
-  const handleLogout = () => {
-    signOut(auth)
-      .then(() => {
-        Swal.fire({
-          title: 'Até logo!',
-          text: 'Você saiu da sua conta com sucesso!',
-          icon: 'success',
-          confirmButtonText: 'OK',
-        }).then(() => {
-          navigation.replace('Login');
-        });
-      })
-      .catch((error) => {
-        Swal.fire({
-          title: 'Erro',
-          text: 'Ocorreu um erro ao tentar deslogar!',
-          icon: 'error',
-          confirmButtonText: 'Tentar Novamente',
-        });
-      });
-  };
+    return (
+        <View style={styles.container}>
+          <View style={styles.card}>
+            <Image
+                source={require('../../assets/icone_usuario.webp')}
+                style={styles.fotoPerfil}
+            />
+            
+            <Text style={styles.nomeText}><Text style={styles.bold}>Nome de usuário:</Text> {nome}</Text>
 
-  if (!user) return null;
+            <TextInput
+                style={styles.input}
+                value={novoNome}
+                onChangeText={(text) => {
+                    setNovoNome(text);
+                    setNome(text);
+                }}
+            />
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Perfil</Text>
-      <View style={styles.profileContainer}>
-        <Image
-          source={{ uri: user.foto }}
-          style={styles.profileImage}
-        />
-        <Text style={styles.userName}>
-          {user.displayName || 'Usuário'}
-        </Text>
-        <Text style={styles.userEmail}>{user.email}</Text>
-      </View>
+            <TouchableOpacity style={styles.botaoSalvar} onPress={salvarAlteracoes}>
+                <Text style={styles.botaoText}>Salvar</Text>
+            </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('EditarPerfil')} style={styles.editProfileButton}>
-        <Text style={styles.editProfileText}>Editar Perfil</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-        <Ionicons name="exit-outline" size={20} color="#fff" style={{ marginRight: 8 }} />
-        <Text style={styles.logoutText}>Sair da conta</Text>
-      </TouchableOpacity>
-
-    </View>
-  );
+            <TouchableOpacity style={styles.botaoLogout} onPress={logout}>
+                <Text style={styles.botaoTextLogout}>Sair</Text>
+            </TouchableOpacity>
+            </View>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#121212',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  title: {
-    color: "#fff",
-    fontSize: 27,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  profileContainer: {
-    backgroundColor: '#1e1e1e',
-    padding: 25,
-    borderRadius: 20,
-    width: '100%',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 10,
-  },
-  profileImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginBottom: 20,
-    borderWidth: 3,
-    borderColor: '#fff',
-  },
-  userName: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  userEmail: {
-    color: '#ccc',
-    fontSize: 16,
-    marginTop: 5,
-  },
-  userBio: {
-    color: '#aaa',
-    fontSize: 15,
-    marginTop: 15,
-    paddingHorizontal: 10,
-    textAlign: 'center',
-    fontStyle: 'italic',
-  },
-  editProfileButton: {
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginTop: 30,
-    width: '100%',
-  },
-  editProfileText: {
-    color: '#000',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  logoutButton: {
-    backgroundColor: 'red',
-    padding: 15,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    marginTop: 15,
-    width: '100%',
-  },
-  logoutText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        padding: 20,
+        backgroundColor: '#fff',
+    },
+    card: {
+      backgroundColor: "#fff",
+      borderWidth: 2,
+      borderColor: "#1e90ff",
+      padding: 20,
+      borderRadius: 30,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    fotoPerfil: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        marginBottom: 20,
+    },
+    nomeText: {
+        fontSize: 18,
+        marginBottom: 10,
+    },
+    bold: {
+      fontWeight: 'bold',
+    },
+    input: {
+        width: '80%',
+        height: 40,
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 5,
+        marginBottom: 20,
+        paddingLeft: 10,
+    },
+    botaoSalvar: {
+        backgroundColor: '#1e90ff',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+        marginBottom: 20,
+    },
+    botaoText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    botaoLogout: {
+        backgroundColor: '#FF6347',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+    },
+    botaoTextLogout: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
 });
